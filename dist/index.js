@@ -345,7 +345,7 @@ const VideoPlayer = (props) => {
             });
         }
         else {
-            setControlsOpacity(new Animated.Value(1));
+            setControlsOpacity(new Animated.Value(0));
             setControlsState(ControlStates.Hidden);
         }
     };

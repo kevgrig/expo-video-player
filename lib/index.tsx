@@ -443,23 +443,18 @@ const VideoPlayer = (props: Props) => {
   const showControls = () => {
     const { fadeInDuration } = props
 
-    if (fadeInDuration > 0) {
-      showingAnimation = Animated.timing(controlsOpacity, {
-        toValue: 1,
-        duration: fadeInDuration,
-        useNativeDriver: true,
-      })
+    showingAnimation = Animated.timing(controlsOpacity, {
+      toValue: 1,
+      duration: fadeInDuration,
+      useNativeDriver: true,
+    })
 
-      showingAnimation.start(({ finished }) => {
-        if (finished) {
-          setControlsState(ControlStates.Shown)
-          resetControlsTimer()
-        }
-      })
-    } else {
-      setControlsOpacity(new Animated.Value(1))
-      setControlsState(ControlStates.Shown)
-    }
+    showingAnimation.start(({ finished }) => {
+      if (finished) {
+        setControlsState(ControlStates.Shown)
+        resetControlsTimer()
+      }
+    })
   }
 
   const hideControls = (immediately = false) => {
@@ -468,22 +463,16 @@ const VideoPlayer = (props: Props) => {
     if (controlsTimer) {
       clearTimeout(controlsTimer)
     }
-
-    if ((immediately && quickFadeOutDuration > 0) || (immediately && quickFadeOutDuration > 0)) {
-      hideAnimation = Animated.timing(controlsOpacity, {
-        toValue: 0,
-        duration: immediately ? quickFadeOutDuration : fadeOutDuration,
-        useNativeDriver: true,
-      })
-      hideAnimation.start(({ finished }) => {
-        if (finished) {
-          setControlsState(ControlStates.Hidden)
-        }
-      })
-    } else {
-      setControlsOpacity(new Animated.Value(0))
-      setControlsState(ControlStates.Hidden)
-    }
+    hideAnimation = Animated.timing(controlsOpacity, {
+      toValue: 0,
+      duration: immediately ? quickFadeOutDuration : fadeOutDuration,
+      useNativeDriver: true,
+    })
+    hideAnimation.start(({ finished }) => {
+      if (finished) {
+        setControlsState(ControlStates.Hidden)
+      }
+    })
   }
 
   const onTimerDone = () => {
@@ -499,11 +488,7 @@ const VideoPlayer = (props: Props) => {
       clearTimeout(controlsTimer)
     }
 
-    if (hideControlsTimerDuration > 0) {
-      controlsTimer = setTimeout(() => onTimerDone(), hideControlsTimerDuration)
-    } else {
-      onTimerDone()
-    }
+    controlsTimer = setTimeout(() => onTimerDone(), hideControlsTimerDuration)
   }
 
   const {

@@ -408,8 +408,6 @@ const VideoPlayer = (props: Props) => {
   }
 
   const togglePlay = async () => {
-    console.info('togglePlay', controlsState, playbackState)
-
     if (controlsState === ControlStates.Hidden) {
       return
     }
@@ -445,18 +443,23 @@ const VideoPlayer = (props: Props) => {
   const showControls = () => {
     const { fadeInDuration } = props
 
-    showingAnimation = Animated.timing(controlsOpacity, {
-      toValue: 1,
-      duration: fadeInDuration,
-      useNativeDriver: true,
-    })
+    if (fadeInDuration > 0) {
+      showingAnimation = Animated.timing(controlsOpacity, {
+        toValue: 1,
+        duration: fadeInDuration,
+        useNativeDriver: true,
+      })
 
-    showingAnimation.start(({ finished }) => {
-      if (finished) {
-        setControlsState(ControlStates.Shown)
-        resetControlsTimer()
-      }
-    })
+      showingAnimation.start(({ finished }) => {
+        if (finished) {
+          setControlsState(ControlStates.Shown)
+          resetControlsTimer()
+        }
+      })
+    } else {
+      setControlsOpacity(new Animated.Value(1))
+      setControlsState(ControlStates.Shown)
+    }
   }
 
   const hideControls = (immediately = false) => {
@@ -465,16 +468,22 @@ const VideoPlayer = (props: Props) => {
     if (controlsTimer) {
       clearTimeout(controlsTimer)
     }
-    hideAnimation = Animated.timing(controlsOpacity, {
-      toValue: 0,
-      duration: immediately ? quickFadeOutDuration : fadeOutDuration,
-      useNativeDriver: true,
-    })
-    hideAnimation.start(({ finished }) => {
-      if (finished) {
-        setControlsState(ControlStates.Hidden)
-      }
-    })
+
+    if ((immediately && quickFadeOutDuration > 0) || (immediately && quickFadeOutDuration > 0)) {
+      hideAnimation = Animated.timing(controlsOpacity, {
+        toValue: 0,
+        duration: immediately ? quickFadeOutDuration : fadeOutDuration,
+        useNativeDriver: true,
+      })
+      hideAnimation.start(({ finished }) => {
+        if (finished) {
+          setControlsState(ControlStates.Hidden)
+        }
+      })
+    } else {
+      setControlsOpacity(new Animated.Value(1))
+      setControlsState(ControlStates.Hidden)
+    }
   }
 
   const onTimerDone = () => {
@@ -483,14 +492,18 @@ const VideoPlayer = (props: Props) => {
     hideControls()
   }
 
-  const resetControlsTimer = async () => {
+  const resetControlsTimer = () => {
     const { hideControlsTimerDuration } = props
 
     if (controlsTimer) {
       clearTimeout(controlsTimer)
     }
 
-    controlsTimer = setTimeout(() => onTimerDone(), hideControlsTimerDuration)
+    if (hideControlsTimerDuration > 0) {
+      controlsTimer = setTimeout(() => onTimerDone(), hideControlsTimerDuration)
+    } else {
+      onTimerDone()
+    }
   }
 
   const {

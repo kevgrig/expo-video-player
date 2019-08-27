@@ -277,7 +277,6 @@ const VideoPlayer = (props) => {
         }
     };
     const togglePlay = async () => {
-        console.info('togglePlay', controlsState, playbackState);
         if (controlsState === ControlStates.Hidden) {
             return;
         }
@@ -310,45 +309,62 @@ const VideoPlayer = (props) => {
     };
     const showControls = () => {
         const { fadeInDuration } = props;
-        showingAnimation = Animated.timing(controlsOpacity, {
-            toValue: 1,
-            duration: fadeInDuration,
-            useNativeDriver: true,
-        });
-        showingAnimation.start(({ finished }) => {
-            if (finished) {
-                setControlsState(ControlStates.Shown);
-                resetControlsTimer();
-            }
-        });
+        if (fadeInDuration > 0) {
+            showingAnimation = Animated.timing(controlsOpacity, {
+                toValue: 1,
+                duration: fadeInDuration,
+                useNativeDriver: true,
+            });
+            showingAnimation.start(({ finished }) => {
+                if (finished) {
+                    setControlsState(ControlStates.Shown);
+                    resetControlsTimer();
+                }
+            });
+        }
+        else {
+            setControlsOpacity(new Animated.Value(1));
+            setControlsState(ControlStates.Shown);
+        }
     };
     const hideControls = (immediately = false) => {
         const { quickFadeOutDuration, fadeOutDuration } = props;
         if (controlsTimer) {
             clearTimeout(controlsTimer);
         }
-        hideAnimation = Animated.timing(controlsOpacity, {
-            toValue: 0,
-            duration: immediately ? quickFadeOutDuration : fadeOutDuration,
-            useNativeDriver: true,
-        });
-        hideAnimation.start(({ finished }) => {
-            if (finished) {
-                setControlsState(ControlStates.Hidden);
-            }
-        });
+        if ((immediately && quickFadeOutDuration > 0) || (immediately && quickFadeOutDuration > 0)) {
+            hideAnimation = Animated.timing(controlsOpacity, {
+                toValue: 0,
+                duration: immediately ? quickFadeOutDuration : fadeOutDuration,
+                useNativeDriver: true,
+            });
+            hideAnimation.start(({ finished }) => {
+                if (finished) {
+                    setControlsState(ControlStates.Hidden);
+                }
+            });
+        }
+        else {
+            setControlsOpacity(new Animated.Value(1));
+            setControlsState(ControlStates.Hidden);
+        }
     };
     const onTimerDone = () => {
         // After the controls timer runs out, fade away the controls slowly
         setControlsState(ControlStates.Hiding);
         hideControls();
     };
-    const resetControlsTimer = async () => {
+    const resetControlsTimer = () => {
         const { hideControlsTimerDuration } = props;
         if (controlsTimer) {
             clearTimeout(controlsTimer);
         }
-        controlsTimer = setTimeout(() => onTimerDone(), hideControlsTimerDuration);
+        if (hideControlsTimerDuration > 0) {
+            controlsTimer = setTimeout(() => onTimerDone(), hideControlsTimerDuration);
+        }
+        else {
+            onTimerDone();
+        }
     };
     const { playIcon: VideoPlayIcon, pauseIcon: VideoPauseIcon, spinner: VideoSpinner, fullscreenEnterIcon: VideoFullscreenEnterIcon, fullscreenExitIcon: VideoFullscreenExitIcon, replayIcon: VideoReplayIcon, switchToLandscape, switchToPortrait, isPortrait, sliderColor, iosThumbImage, iosTrackImage, showFullscreenButton, textStyle, videoProps, videoBackground, width, height, } = props;
     const centeredContentWidth = 60;

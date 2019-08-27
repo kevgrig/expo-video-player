@@ -210,7 +210,7 @@ const VideoPlayer = (props: Props) => {
       throw new Error('`Source` is required')
     }
 
-    //debug && console.info(`User is ${isConnected ? 'on' : 'off'}line`)
+    debug && console.info(`User is ${isConnected ? 'on' : 'off'}line`)
     setAudio()
   })
 
@@ -261,9 +261,7 @@ const VideoPlayer = (props: Props) => {
   }
 
   const updatePlaybackCallback = (status: PlaybackStatus) => {
-    const { errorCallback, playbackCallback, debug } = props
-
-    debug && !status.isPlaying && console.info('updatePlaybackCallback', status)
+    const { errorCallback, playbackCallback } = props
 
     try {
       playbackCallback(status)
@@ -485,7 +483,7 @@ const VideoPlayer = (props: Props) => {
     hideControls()
   }
 
-  const resetControlsTimer = async () => {
+  const resetControlsTimer = () => {
     const { hideControlsTimerDuration } = props
 
     if (controlsTimer) {
@@ -616,7 +614,7 @@ const VideoPlayer = (props: Props) => {
   )
 
   return (
-    <TouchableOpacity onPress={toggleControls}>
+    <TouchableWithoutFeedback onPress={toggleControls}>
       <View style={{ backgroundColor: videoBackground }}>
         <Video
           source={source}
@@ -742,7 +740,7 @@ const VideoPlayer = (props: Props) => {
           )}
         </Animated.View>
       </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   )
 }
 

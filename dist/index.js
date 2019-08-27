@@ -410,7 +410,7 @@ const VideoPlayer = (props) => {
     }}>
       <Text style={[textStyle, { textAlign: 'center' }]}>{text}</Text>
     </View>);
-    return (<TouchableWithoutFeedback onPress={toggleControls}>
+    return (<TouchableOpacity onPress={toggleControls} activeOpacity={1}>
       <View style={{ backgroundColor: videoBackground }}>
         <Video source={source} ref={component => {
         playbackInstance = component;
@@ -499,6 +499,6 @@ const VideoPlayer = (props) => {
             </Control>)}
         </Animated.View>
       </View>
-    </TouchableWithoutFeedback>);
+    </TouchableOpacity>);
 };
 export default withDefaultProps(VideoPlayer, defaultProps);

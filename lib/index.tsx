@@ -614,7 +614,7 @@ const VideoPlayer = (props: Props) => {
   )
 
   return (
-    <TouchableWithoutFeedback onPress={toggleControls}>
+    <TouchableOpacity onPress={toggleControls} activeOpacity={1}>
       <View style={{ backgroundColor: videoBackground }}>
         <Video
           source={source}
@@ -740,7 +740,7 @@ const VideoPlayer = (props: Props) => {
           )}
         </Animated.View>
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   )
 }
 

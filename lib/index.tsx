@@ -203,14 +203,13 @@ const VideoPlayer = (props: Props) => {
 
   // https://usehooks.com/useEventListener/
   useEffect(() => {
-    const { videoProps, debug } = props
+    const { videoProps } = props
 
     if (videoProps.source === null) {
       console.error('`Source` is a required property')
       throw new Error('`Source` is required')
     }
 
-    debug && console.info(`User is ${isConnected ? 'on' : 'off'}line`)
     setAudio()
   })
 
@@ -261,7 +260,7 @@ const VideoPlayer = (props: Props) => {
   }
 
   const updatePlaybackCallback = (status: PlaybackStatus) => {
-    const { errorCallback, playbackCallback } = props
+    const { errorCallback, playbackCallback, debug } = props
 
     try {
       playbackCallback(status)
@@ -289,6 +288,7 @@ const VideoPlayer = (props: Props) => {
           updatePlaybackState(PlaybackStates.Ended)
         } else {
           // If the video is buffering but there is no Internet, you go to the Error state
+          debug && console.info(`User is ${isConnected ? 'on' : 'off'}line`)
           if (!isConnected && status.isBuffering) {
             updatePlaybackState(PlaybackStates.Error)
             setError(

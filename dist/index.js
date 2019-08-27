@@ -115,12 +115,11 @@ const VideoPlayer = (props) => {
     };
     // https://usehooks.com/useEventListener/
     useEffect(() => {
-        const { videoProps, debug } = props;
+        const { videoProps } = props;
         if (videoProps.source === null) {
             console.error('`Source` is a required property');
             throw new Error('`Source` is required');
         }
-        debug && console.info(`User is ${isConnected ? 'on' : 'off'}line`);
         setAudio();
     });
     // Handle events during playback
@@ -148,7 +147,7 @@ const VideoPlayer = (props) => {
         }
     };
     const updatePlaybackCallback = (status) => {
-        const { errorCallback, playbackCallback } = props;
+        const { errorCallback, playbackCallback, debug } = props;
         try {
             playbackCallback(status);
         }
@@ -176,6 +175,7 @@ const VideoPlayer = (props) => {
                 }
                 else {
                     // If the video is buffering but there is no Internet, you go to the Error state
+                    debug && console.info(`User is ${isConnected ? 'on' : 'off'}line`);
                     if (!isConnected && status.isBuffering) {
                         updatePlaybackState(PlaybackStates.Error);
                         setError('You are probably offline. Please make sure you are connected to the Internet to watch this video');

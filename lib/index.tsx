@@ -71,6 +71,8 @@ type Error = {
   obj: object
 }
 
+console.info('Test V1')
+
 const defaultProps = {
   children: null,
   debug: false,

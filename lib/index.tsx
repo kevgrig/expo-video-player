@@ -410,6 +410,10 @@ const VideoPlayer = (props: Props) => {
   }
 
   const togglePlay = async () => {
+    const { debug } = props
+
+    debug && console.info('togglePlay', controlsState, playbackState)
+
     if (controlsState === ControlStates.Hidden) {
       return
     }
@@ -483,7 +487,7 @@ const VideoPlayer = (props: Props) => {
     hideControls()
   }
 
-  const resetControlsTimer = () => {
+  const resetControlsTimer = async () => {
     const { hideControlsTimerDuration } = props
 
     if (controlsTimer) {
@@ -614,7 +618,7 @@ const VideoPlayer = (props: Props) => {
   )
 
   return (
-    <TouchableOpacity onPress={toggleControls} activeOpacity={1}>
+    <TouchableOpacity onPress={toggleControls}>
       <View style={{ backgroundColor: videoBackground }}>
         <Video
           source={source}

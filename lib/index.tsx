@@ -410,9 +410,7 @@ const VideoPlayer = (props: Props) => {
   }
 
   const togglePlay = async () => {
-    const { debug } = props
-
-    debug && console.info('togglePlay', controlsState, playbackState)
+    console.info('togglePlay', controlsState, playbackState)
 
     if (controlsState === ControlStates.Hidden) {
       return

@@ -263,7 +263,7 @@ const VideoPlayer = (props: Props) => {
   const updatePlaybackCallback = (status: PlaybackStatus) => {
     const { errorCallback, playbackCallback, debug } = props
 
-    debug && console.info('updatePlaybackCallback', status)
+    debug && !status.isPlaying && console.info('updatePlaybackCallback', status)
 
     try {
       playbackCallback(status)

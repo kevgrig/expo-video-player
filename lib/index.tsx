@@ -210,7 +210,7 @@ const VideoPlayer = (props: Props) => {
       throw new Error('`Source` is required')
     }
 
-    debug && console.info(`User is ${isConnected ? 'on' : 'off'}line`)
+    //debug && console.info(`User is ${isConnected ? 'on' : 'off'}line`)
     setAudio()
   })
 
@@ -261,7 +261,9 @@ const VideoPlayer = (props: Props) => {
   }
 
   const updatePlaybackCallback = (status: PlaybackStatus) => {
-    const { errorCallback, playbackCallback } = props
+    const { errorCallback, playbackCallback, debug } = props
+
+    debug && console.info('updatePlaybackCallback', status)
 
     try {
       playbackCallback(status)

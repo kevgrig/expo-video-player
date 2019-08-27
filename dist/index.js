@@ -343,7 +343,7 @@ const VideoPlayer = (props) => {
         setControlsState(ControlStates.Hiding);
         hideControls();
     };
-    const resetControlsTimer = () => {
+    const resetControlsTimer = async () => {
         const { hideControlsTimerDuration } = props;
         if (controlsTimer) {
             clearTimeout(controlsTimer);

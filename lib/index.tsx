@@ -483,7 +483,7 @@ const VideoPlayer = (props: Props) => {
     hideControls()
   }
 
-  const resetControlsTimer = () => {
+  const resetControlsTimer = async () => {
     const { hideControlsTimerDuration } = props
 
     if (controlsTimer) {
